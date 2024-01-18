@@ -39,11 +39,14 @@ class _NotificationTileState extends State<NotificationTile> {
         _notification = _notification.copyWith(isRead: true);
       }),
       leading: Icon(
-        switch (widget.notification.type) {
-          NotificationType.like => Icons.favorite,
-          NotificationType.comment => Icons.chat_bubble,
-          NotificationType.follow => Icons.person_add,
-        },
+        widget.notification.type == NotificationType.like
+            ? Icons.favorite
+            : widget.notification.type == NotificationType.comment
+                ? Icons.chat_bubble
+                : widget.notification.type == NotificationType.follow
+                    ? Icons.person_add
+                    : Icons
+                        .error, // Default icon in case none of the types match
         color: _notification.isRead
             ? theme.disabledColor
             : theme.colorScheme.primary,

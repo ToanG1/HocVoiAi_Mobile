@@ -18,6 +18,25 @@ class UserNotification {
     this.isRead = false,
   });
 
+  // static List<UserNotification> dummyNotifications = List.generate(
+  //   7,
+  //   (index) {
+  //     final faker = Faker();
+  //     final type = NotificationType.values[Random().nextInt(2)];
+  //     final user =
+  //         User.dummyUsers[Random().nextInt(User.dummyUsers.length - 1)];
+
+  //     return UserNotification(
+  //       type: type,
+  //       message: switch (type) {
+  //         NotificationType.like => '${user.username} menyukai postingan anda',
+  //         NotificationType.comment => '${user.username} membalas komentar anda',
+  //         NotificationType.follow => '${user.username} mulai mengikuti anda',
+  //       },
+  //       dateTime: faker.date.dateTime(minYear: 2020, maxYear: 2023),
+  //     );
+  //   },
+  // );
   static List<UserNotification> dummyNotifications = List.generate(
     7,
     (index) {
@@ -26,13 +45,22 @@ class UserNotification {
       final user =
           User.dummyUsers[Random().nextInt(User.dummyUsers.length - 1)];
 
+      String message;
+      switch (type) {
+        case NotificationType.like:
+          message = '${user.username} menyukai postingan anda';
+          break;
+        case NotificationType.comment:
+          message = '${user.username} membalas komentar anda';
+          break;
+        case NotificationType.follow:
+          message = '${user.username} mulai mengikuti anda';
+          break;
+      }
+
       return UserNotification(
         type: type,
-        message: switch (type) {
-          NotificationType.like => '${user.username} menyukai postingan anda',
-          NotificationType.comment => '${user.username} membalas komentar anda',
-          NotificationType.follow => '${user.username} mulai mengikuti anda',
-        },
+        message: message,
         dateTime: faker.date.dateTime(minYear: 2020, maxYear: 2023),
       );
     },
