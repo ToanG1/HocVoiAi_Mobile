@@ -44,8 +44,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.dmSansTextTheme(),
       ),
-      //home: const LoginScreen(),
-      home: const SearchScreen(),
+      home: const LoginScreen(),
+      //home: const SearchScreen(),
     );
   }
 }
