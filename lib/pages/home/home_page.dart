@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:quick_social/common/common.dart';
 import 'package:quick_social/models/models.dart';
 import 'package:quick_social/pages/pages.dart';
+import 'package:quick_social/pages/search/search_page.dart';
 
 class HomePage extends StatefulWidget {
+  static String routeName = "/home";
+
   const HomePage({super.key});
 
   static Route<void> route() {
@@ -58,6 +61,11 @@ class _HomePageState extends State<HomePage> {
       onPageChanged: _pageChanged,
       children: [
         const FeedPage(),
+        // chuyển hướng trang
+        const SearchScreen(),
+        // const Search(),
+        //const Chat(),
+        const NotificationsPage(),
         const NotificationsPage(),
         ProfilePage(user: User.dummyUsers[0]),
       ],
@@ -88,6 +96,22 @@ class _HomePageState extends State<HomePage> {
             color: theme.colorScheme.primary,
           ),
           label: const Text('Home'),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(Icons.search_outlined),
+          selectedIcon: Icon(
+            Icons.search,
+            color: theme.colorScheme.primary,
+          ),
+          label: const Text('Search'),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(Icons.message_outlined),
+          selectedIcon: Icon(
+            Icons.message,
+            color: theme.colorScheme.primary,
+          ),
+          label: const Text('Message'),
         ),
         NavigationRailDestination(
           icon: const Icon(Icons.notifications_outlined),
@@ -125,6 +149,22 @@ class _HomePageState extends State<HomePage> {
             color: theme.colorScheme.primary,
           ),
           label: 'Home',
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.search_outlined),
+          selectedIcon: Icon(
+            Icons.search,
+            color: theme.colorScheme.primary,
+          ),
+          label: 'Search',
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.message_outlined),
+          selectedIcon: Icon(
+            Icons.message,
+            color: theme.colorScheme.primary,
+          ),
+          label: 'Message',
         ),
         NavigationDestination(
           icon: const Icon(Icons.notifications_outlined),

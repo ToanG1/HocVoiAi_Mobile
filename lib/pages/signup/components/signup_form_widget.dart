@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../login/login_page.dart';
+import '../../login/login_screen.dart';
 
 class SignUpFormWidget extends StatelessWidget {
   const SignUpFormWidget({
@@ -38,7 +38,7 @@ class SignUpFormWidget extends StatelessWidget {
               decoration: const InputDecoration(
                 label: Text("Phone no"),
                 hintText: "Phone no",
-                prefixIcon: Icon(Icons.numbers),
+                prefixIcon: Icon(Icons.phone),
               ),
             ),
             const SizedBox(

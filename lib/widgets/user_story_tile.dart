@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quick_social/common/common.dart';
 import 'package:quick_social/models/models.dart';
-import 'package:quick_social/pages/user_story_page.dart';
+import 'package:quick_social/pages/story_users/user_story_page.dart';
 import 'package:quick_social/widgets/user_story_avatar.dart';
 
 class UserStoryTile extends StatelessWidget {

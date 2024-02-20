@@ -1,4 +1,5 @@
 import 'package:quick_social/models/models.dart';
+// dữ liệu dùng faker test ngẫu nhiên
 
 class UserStory {
   final User owner;

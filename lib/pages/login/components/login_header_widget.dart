@@ -14,17 +14,22 @@ class LoginHeaderWidget extends StatelessWidget {
       children: [
         Image(
           image: const AssetImage(
-            'assets/images/on_boarding_images/page1.png',
+            'assets/images/logo.png',
           ),
-          height: size.height * 0.3,
+          height: size.height * 0.2,
         ),
         Text(
-          'Welcome Back',
-          style: Theme.of(context).textTheme.headlineMedium,
+          'Embark on your AI journey',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         Text(
-          'Make it work, make it right, make it fast.',
+          'Connect, learn, and grow with AI Journey social network.',
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.labelMedium,
+        ),
+        const SizedBox(
+          height: 20,
         ),
       ],
     );

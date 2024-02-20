@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quick_social/models/models.dart';
-import 'package:quick_social/widgets/notification_tile.dart';
+import 'package:quick_social/pages/notifications/body/notification_tile.dart';
 import 'package:quick_social/widgets/widgets.dart';
 
 class NotificationsPage extends StatefulWidget {

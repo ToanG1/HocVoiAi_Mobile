@@ -5,13 +5,14 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Image.asset(
-          "assets/images/logo.png",
-          width: 160,
-          height: 100,
-        ),
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    return Text(
+      'AI Journey',
+      style: textTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+        color: theme.colorScheme.primary,
       ),
     );
   }

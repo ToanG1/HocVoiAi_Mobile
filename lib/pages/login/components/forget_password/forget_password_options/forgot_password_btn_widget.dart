@@ -21,7 +21,7 @@ class ForgotPasswordBtnWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey.shade900),
+            color: Color.fromARGB(255, 102, 220, 183)),
         child: Row(
           children: [
             Icon(

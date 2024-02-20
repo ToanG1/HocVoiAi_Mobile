@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../login/components/forget_password/forget_password_mail/form_header_widget.dart';
 import '../constants/image_strings.dart';
 import '../constants/text_strings.dart';
-import '../login/login_page.dart';
+import '../login/login_screen.dart';
 import '../signup/components/signup_form_widget.dart';
 
 class Signup extends StatefulWidget {
+  static String routeName = "/signup";
+
   const Signup({super.key});
 
   @override
@@ -17,7 +19,7 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 248, 249, 249),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -25,7 +27,7 @@ class _SignupState extends State<Signup> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const FormHeaderWidget(
-                  image: metaPng,
+                  image: "assets/images/logo/logosocailAI.png",
                   subtitle: signupSubtitle,
                   imageHeight: 0.3,
                 ),

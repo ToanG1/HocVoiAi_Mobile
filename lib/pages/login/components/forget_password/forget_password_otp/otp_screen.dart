@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 import '../../../../constants/text_strings.dart';
-import '../../../login_page.dart';
+import '../../../login_screen.dart';
 
 class OTPScreen extends StatelessWidget {
   const OTPScreen({super.key});
@@ -34,6 +34,21 @@ class OTPScreen extends StatelessWidget {
               const SizedBox(
                 height: 60.0,
               ),
+              TextField(
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                onChanged: (value) {
+                  if (value.length == 6) {
+                    //onCompleted(value);
+                  }
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter OTP',
+                  labelText: 'OTP',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
               // OtpTextField(
               //   numberOfFields: 6,
               //   keyboardType: TextInputType.number,

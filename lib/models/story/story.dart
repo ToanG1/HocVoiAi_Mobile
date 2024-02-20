@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:faker/faker.dart';
-
+// dữ liệu dùng faker test ngẫu nhiên
 class Story {
   final String storyImage;
   final String caption;

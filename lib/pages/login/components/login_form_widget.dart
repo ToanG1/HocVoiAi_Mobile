@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quick_social/pages/home/home_page.dart';
 import '../components/forgot_password_model_bottom_sheet.dart';
 
 class LoginForm extends StatefulWidget {
@@ -26,9 +27,9 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return SingleChildScrollView(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        //padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -69,13 +70,13 @@ class _LoginFormState extends State<LoginForm> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigator.popUntil(context, (route) => ); Main screen e kadar
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const MainScreen(),
-                  //   ),
-                  // );
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
                 },
                 child: Text(
                   'Login'.toUpperCase(),

@@ -48,13 +48,14 @@ class UserNotification {
       String message;
       switch (type) {
         case NotificationType.like:
-          message = '${user.username} menyukai postingan anda';
+          message = 'Ninh Ninh liked your post';
           break;
         case NotificationType.comment:
-          message = '${user.username} membalas komentar anda';
+          message = 'Ninh Ninh commented on your post';
+          //message = '${user.username} membalas komentar anda';
           break;
         case NotificationType.follow:
-          message = '${user.username} mulai mengikuti anda';
+          message = 'Ninh Ninh has followed you';
           break;
       }
 
