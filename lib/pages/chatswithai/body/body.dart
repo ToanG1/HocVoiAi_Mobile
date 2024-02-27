@@ -1,58 +1,21 @@
-import 'package:ai_journey/pages/chatswithai/chatwithai.dart';
 import 'package:flutter/material.dart';
 
-class Chat extends StatefulWidget {
-  const Chat({super.key});
+class ChatWithAI extends StatefulWidget {
+  const ChatWithAI({super.key});
 
   @override
-  State<Chat> createState() => _ChatState();
+  State<ChatWithAI> createState() => _ChatWithAIState();
 }
 
-class _ChatState extends State<Chat> {
+class _ChatWithAIState extends State<ChatWithAI> {
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return SingleChildScrollView(
       child: Container(
+        //padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Chat', style: textTheme.headlineSmall),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChatWithAIScreen()),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.send_sharp,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Container(

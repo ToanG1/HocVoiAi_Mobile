@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:quick_social/pages/search/body/logosearch.dart';
-import 'package:quick_social/pages/search/search_page.dart';
+import 'package:ai_journey/pages/search/body/logosearch.dart';
+import 'package:ai_journey/pages/search/search_page.dart';
 import 'package:splash_view/source/presentation/pages/splash_view.dart';
 import 'package:splash_view/source/presentation/widgets/background_decoration.dart';
 import 'package:splash_view/source/presentation/widgets/done.dart';

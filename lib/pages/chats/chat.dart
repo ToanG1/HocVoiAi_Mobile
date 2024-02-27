@@ -1,3 +1,4 @@
+import 'package:ai_journey/pages/chats/body/body.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -5,6 +6,20 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final size = MediaQuery.of(context).size;
+    return const Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        //padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            //const ChatHeader(),
+            const Chat(),
+          ],
+        ),
+      ),
+    );
   }
 }

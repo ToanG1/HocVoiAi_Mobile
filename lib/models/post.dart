@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:faker/faker.dart';
-import 'package:quick_social/models/models.dart';
+import 'package:ai_journey/models/models.dart';
 
 class Post {
   final User owner;

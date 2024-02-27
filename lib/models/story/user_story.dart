@@ -1,4 +1,4 @@
-import 'package:quick_social/models/models.dart';
+import 'package:ai_journey/models/models.dart';
 // dữ liệu dùng faker test ngẫu nhiên
 
 class UserStory {

@@ -1,4 +1,4 @@
-package com.example.quick_social
+package com.example.ai_journey
 
 import io.flutter.embedding.android.FlutterActivity
 

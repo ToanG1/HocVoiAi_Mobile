@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quick_social/models/models.dart';
+import 'package:ai_journey/models/models.dart';
 
 class UserStoryAvatar extends StatelessWidget {
   const UserStoryAvatar({

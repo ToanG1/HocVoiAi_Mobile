@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quick_social/models/models.dart';
-import 'package:quick_social/widgets/comment_tile.dart';
+import 'package:ai_journey/models/models.dart';
+import 'package:ai_journey/widgets/comment_tile.dart';
 
 class CommentsBottomSheet extends StatefulWidget {
   const CommentsBottomSheet({super.key, required this.post});

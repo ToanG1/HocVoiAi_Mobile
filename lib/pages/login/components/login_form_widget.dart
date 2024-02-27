@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quick_social/pages/home/home_page.dart';
+import 'package:ai_journey/pages/home/home_page.dart';
 import '../components/forgot_password_model_bottom_sheet.dart';
 
 class LoginForm extends StatefulWidget {

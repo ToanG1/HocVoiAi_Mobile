@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quick_social/common/common.dart';
-import 'package:quick_social/models/models.dart';
-import 'package:quick_social/pages/pages.dart';
-import 'package:quick_social/widgets/widgets.dart';
+import 'package:ai_journey/common/common.dart';
+import 'package:ai_journey/models/models.dart';
+import 'package:ai_journey/pages/pages.dart';
+import 'package:ai_journey/widgets/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({

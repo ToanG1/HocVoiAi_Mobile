@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quick_social/widgets/widgets.dart';
+import 'package:ai_journey/widgets/widgets.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quick_social/pages/pages.dart';
+import 'package:ai_journey/pages/pages.dart';
 
 class SearchLogo extends StatelessWidget {
   const SearchLogo({super.key});

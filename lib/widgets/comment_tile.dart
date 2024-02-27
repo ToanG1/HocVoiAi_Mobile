@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quick_social/models/models.dart';
-import 'package:quick_social/widgets/widgets.dart';
+import 'package:ai_journey/models/models.dart';
+import 'package:ai_journey/widgets/widgets.dart';
 
 class CommentTile extends StatelessWidget {
   const CommentTile({super.key, required this.comment});

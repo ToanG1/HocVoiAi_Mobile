@@ -1,8 +1,9 @@
+import 'package:ai_journey/pages/chats/chat.dart';
 import 'package:flutter/material.dart';
-import 'package:quick_social/common/common.dart';
-import 'package:quick_social/models/models.dart';
-import 'package:quick_social/pages/pages.dart';
-import 'package:quick_social/pages/search/search_page.dart';
+import 'package:ai_journey/common/common.dart';
+import 'package:ai_journey/models/models.dart';
+import 'package:ai_journey/pages/pages.dart';
+import 'package:ai_journey/pages/search/search_page.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
@@ -63,9 +64,7 @@ class _HomePageState extends State<HomePage> {
         const FeedPage(),
         // chuyển hướng trang
         const SearchScreen(),
-        // const Search(),
-        //const Chat(),
-        const NotificationsPage(),
+        const ChatScreen(),
         const NotificationsPage(),
         ProfilePage(user: User.dummyUsers[0]),
       ],
