@@ -12,6 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  footer:
+
 
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.4
@@ -26,6 +28,10 @@ dependencies:
   faker: ^2.1.0
   story: ^1.1.0
   flutter_launcher_icons: ^0.9.2
+  shared_preferences: ^2.2.2
+  fluttertoast: ^8.2.4
+  file_picker: ^6.2.0
+  dio: ^5.4.1
 
 
 

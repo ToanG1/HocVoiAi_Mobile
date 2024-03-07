@@ -1,3 +1,4 @@
+import 'package:ai_journey/pages/post/createPost.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_journey/models/models.dart';
 import 'package:ai_journey/widgets/widgets.dart';
@@ -10,7 +11,7 @@ class FeedPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: _appBar(theme),
+      appBar: _appBar(context, theme),
       body: ResponsivePadding(
         child: ListView(
           children: [
@@ -51,7 +52,7 @@ class FeedPage extends StatelessWidget {
     );
   }
 
-  AppBar _appBar(ThemeData theme) {
+  AppBar _appBar(BuildContext context, ThemeData theme) {
     return AppBar(
       automaticallyImplyLeading: false,
       flexibleSpace: ResponsivePadding(
@@ -63,9 +64,14 @@ class FeedPage extends StatelessWidget {
               children: [
                 const AppLogo(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreatePost()),
+                    );
+                  },
                   icon: Icon(
-                    Icons.send_sharp,
+                    Icons.post_add,
                     color: theme.colorScheme.primary,
                   ),
                 ),

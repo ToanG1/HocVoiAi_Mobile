@@ -34,7 +34,7 @@ class _SignupState extends State<Signup> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                const SignUpFormWidget(),
+                const SignUpForm(),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(

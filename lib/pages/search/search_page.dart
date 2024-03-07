@@ -1,3 +1,4 @@
+import 'package:ai_journey/pages/splash/components/app_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,10 +21,12 @@ class _SearchScreenState extends State<SearchScreen> {
           backgroundColor: Color.fromARGB(255, 255, 255, 255),
           title: const Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              'Search',
-              selectionColor: Colors.black87,
-            ),
+            child: const AppLogoSearch(),
+
+            // child: Text(
+            //   'Search',
+            //   selectionColor: Colors.black87,
+            // ),
           ),
         ),
         body: SafeArea(

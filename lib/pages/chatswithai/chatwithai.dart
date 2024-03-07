@@ -1,5 +1,5 @@
 import 'package:ai_journey/pages/chats/chat.dart';
-import 'package:ai_journey/pages/chatswithai/body/body.dart';
+import 'package:ai_journey/pages/chatswithai/components/body.dart';
 import 'package:flutter/material.dart';
 
 class ChatWithAIScreen extends StatelessWidget {
@@ -62,16 +62,16 @@ class ChatWithAIScreen extends StatelessWidget {
                 height: 30.0,
               ),
               SizedBox(
-                width: double.infinity,
+                width: 200,
                 child: ElevatedButton(
                   onPressed: () {
                     //Navigator.popUntil(context, ModalRoute.withName('/'));
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const HomePage(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ConversationChatAI1(),
+                      ),
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

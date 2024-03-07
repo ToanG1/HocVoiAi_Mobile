@@ -1,7 +1,8 @@
+import 'package:ai_journey/pages/chats/chat.dart';
+import 'package:ai_journey/pages/chatswithai/components/body.dart';
+import 'package:ai_journey/pages/home/loadLazy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ai_journey/pages/search/body/logosearch.dart';
-import 'package:ai_journey/pages/search/search_page.dart';
 import 'package:splash_view/source/presentation/pages/splash_view.dart';
 import 'package:splash_view/source/presentation/widgets/background_decoration.dart';
 import 'package:splash_view/source/presentation/widgets/done.dart';
@@ -44,8 +45,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.dmSansTextTheme(),
       ),
+      //home: const ConversationChatAI1(),
       home: const LoginScreen(),
-      //home: const SearchScreen(),
     );
   }
 }

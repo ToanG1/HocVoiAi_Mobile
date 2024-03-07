@@ -6,7 +6,6 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return const Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
