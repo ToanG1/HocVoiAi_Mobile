@@ -1,3 +1,4 @@
+import 'package:ai_journey/config/app_storage.dart';
 import 'package:ai_journey/pages/chats/chat.dart';
 import 'package:ai_journey/pages/chatswithai/components/body.dart';
 import 'package:ai_journey/pages/home/loadLazy.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppStorage.instance.init();
     return MaterialApp(
       title: 'AI Journey',
       debugShowCheckedModeBanner: false,

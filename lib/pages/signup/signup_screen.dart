@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../login/components/forget_password/forget_password_mail/form_header_widget.dart';
-import '../constants/image_strings.dart';
 import '../constants/text_strings.dart';
 import '../login/login_screen.dart';
 import '../signup/components/signup_form_widget.dart';

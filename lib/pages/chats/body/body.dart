@@ -144,7 +144,7 @@ class BuildFollowableUser extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ConversationChatFriend()),
+            MaterialPageRoute(builder: (context) => MessageScreen()),
           );
         },
         child: CircleAvatar(

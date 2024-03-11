@@ -32,6 +32,9 @@ dependencies:
   fluttertoast: ^8.2.4
   file_picker: ^6.2.0
   dio: ^5.4.1
+  image_field: ^0.0.9
+  gap: ^3.0.1
+  intl: ^0.19.0
 
 
 
@@ -52,6 +55,6 @@ flutter:
     - assets/images/logo/
     - assets/images/temp_user_images/
     - assets/images/signup/
-    - assets/images/screenshots/
+ #   - assets/images/screenshots/
     - assets/images/forget_password/
     - assets/images/refresh_indicator/

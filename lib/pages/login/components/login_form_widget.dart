@@ -8,6 +8,7 @@ import '../components/forgot_password_model_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
 import './../../../config/http_client.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ai_journey/models/connectapi/post.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -18,43 +19,74 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   bool _isPasswordVisible = false;
+  final httpService = HttpService(url);
+  String a = '';
+
+  // Future<void> saveAcessToken() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   // Tiếp tục sử dụng prefs ở đây
+  //   await prefs.setString('accessToken', '$accessToken');
+  // }
+
+  // late String accessToken;
+  // Future<String> validateAccessToken(String accessToken) async {
+  //   // Thực hiện kiểm tra đối với accessToken
+  //   // Ví dụ: Kiểm tra xem accessToken có giá trị hay không
+  //   if (accessToken.isNotEmpty) {
+  //     // Trả về thông báo khi accessToken hợp lệ
+  //     return "Access token is valid";
+  //   } else {
+  //     // Trả về thông báo khi accessToken không hợp lệ
+  //     return "Access token is invalid";
+  //   }
+  // }
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> loginUser() async {
-    final AppStorage prefs = await AppStorage();
+  // Future<void> loginUser() async {
+  //   //final AppStorage prefs = await AppStorage();
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //null check
+  //   //runApp(MyApp(token: data)); //pass it through construtor
+  //   var regBody = {
+  //     "email": _emailController.text,
+  //     "password": _passwordController.text,
+  //   };
+  //   try {
+  //     var response = await http.post(
+  //       Uri.parse(login),
+  //       headers: {"Content-Type": "application/json"},
+  //       body: jsonEncode(regBody),
+  //     );
 
-    var regBody = {
-      "email": _emailController.text,
-      "password": _passwordController.text,
-    };
-    try {
-      var response = await http.post(
-        Uri.parse(login),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(regBody),
-      );
-
-      if (response.statusCode == 200) {
-        // Đăng ký thành công
-        print("Đăng nhập thành công");
-        Fluttertoast.showToast(
-          msg: 'Đăng nhập thành công',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 25.0,
-        );
-      } else {
-        print("Đăng nhập  thành công: ${response.body}");
-      }
-    } catch (error) {
-      print("Đăng nhập  thành công");
-    }
-  }
+  //     if (response.statusCode == 201) {
+  //       // Đăng ký thành công
+  //       print("Đăng nhập thành công: ${response.body}");
+  //       final Map<String, dynamic> jsonData = jsonDecode(response.body);
+  //       accessToken = jsonData['data']['access_token'];
+  //       // Validate accessToken
+  //       String validationMessage = await validateAccessToken(accessToken);
+  //       print(validationMessage);
+  //       // Fluttertoast.showToast(
+  //       //   msg: 'Đăng nhập thành công',
+  //       //   toastLength: Toast.LENGTH_SHORT,
+  //       //   gravity: ToastGravity.BOTTOM,
+  //       //   timeInSecForIosWeb: 1,
+  //       //   backgroundColor: Colors.red,
+  //       //   textColor: const Color.fromARGB(255, 254, 223, 223),
+  //       //   fontSize: 25.0,
+  //       // );
+  //       //Posts.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  //     } else {
+  //       print("Đăng nhập không thành công: ${response.body}");
+  //       var data = prefs.getString('access_token') ?? '';
+  //     }
+  //   } catch (error) {
+  //     print("Đăng nhập  thành công");
+  //   }
+  // }
 
   Widget _buildSuffixIcon() {
     return IconButton(
@@ -116,7 +148,9 @@ class _LoginFormState extends State<LoginForm> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  //await loginUser();
+                  await httpService.loginUser(
+                      _emailController.text, _passwordController.text);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
