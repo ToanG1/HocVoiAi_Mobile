@@ -1,17 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:ai_journey/config/app_storage.dart';
 import 'package:ai_journey/config/http_client.dart';
-import 'package:ai_journey/models/connectapi/post.dart';
 import 'package:ai_journey/pages/home/home_page.dart';
-import 'package:ai_journey/pages/login/components/login_form_widget.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:async';
+import 'package:path/path.dart' as path;
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});
@@ -22,9 +19,11 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   final TextEditingController _contextController = TextEditingController();
+
   late String accessToken;
 
   XFile? image;
+  List<String?> urlImage = [];
   final httpService = HttpService(url);
 
   final ImagePicker picker = ImagePicker();
@@ -34,6 +33,11 @@ class _CreatePostState extends State<CreatePost> {
     setState(() {
       image = img;
     });
+    if (img != null) {
+      //File file = File(img.path);
+      String filePath = img.path;
+      await httpService.uploadFile(filePath);
+    }
   }
 
   // Future<Posts> fetchAlbum() async {
@@ -95,93 +99,6 @@ class _CreatePostState extends State<CreatePost> {
         });
   }
 
-  // Future<String?> gettoken() async {
-  //   try {
-  //     // Gửi yêu cầu HTTP để lấy activationToken
-  //     final response = await http.get(Uri.parse(activationToken));
-
-  //     // Kiểm tra xem yêu cầu có thành công không
-  //     if (response.statusCode == 200) {
-  //       // Giải mã phản hồi JSON để lấy activationToken
-  //       final jsonData = jsonDecode(response.body);
-  //       final activationToken = jsonData['activationToken'];
-
-  //       // Trả về activationToken
-  //       return activationToken;
-  //     } else {
-  //       // Xử lý trường hợp không thành công (vd: báo lỗi)
-  //       throw Exception('Failed to get activation token');
-  //     }
-  //   } catch (error) {
-  //     // Xử lý các lỗi khác (vd: mất kết nối, lỗi hệ thống, ...)
-  //     throw Exception('An error occurred: $error');
-  //   }
-  // }
-
-  // Future<void> createpostUser(String authToken) async {
-  //   var regBody = {
-  //     "content": _contextController.text,
-  //   };
-  //   try {
-  //     var response = await http.post(
-  //       Uri.parse(post),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "Authorization": "Bearer $authToken",
-  //       },
-  //       body: jsonEncode(regBody),
-  //     );
-
-  //     if (response.statusCode == 201) {
-  //       print("Đăng bài thành công: ${response.body}");
-
-  //       // Đăng ký thành công
-  //     } else {
-  //       print("Đăng bài không thành công: ${response.body}");
-  //     }
-  //   } catch (error) {
-  //     print("Đăng nhập  thành công");
-  //   }
-  // }
-
-  // Future<void> postUser(String authToken) async {
-  //   var regBody = {
-  //     "content": _contextController.text,
-  //   };
-  //   try {
-  //     var response = await http.post(
-  //       Uri.parse(post),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "Authorization": "Bearer $authToken",
-  //       },
-  //       body: jsonEncode(regBody),
-  //     );
-
-  //     if (response.statusCode == 201) {
-  //       print("Đăng bài thành công: ${response.body}");
-
-  //       // Đăng ký thành công
-  //     } else {
-  //       print("Đăng bài không thành công: ${response.body}");
-  //     }
-  //   } catch (error) {
-  //     print("Đăng nhập  thành công");
-  //   }
-  // }
-
-  // Future<http.Response> createAlbum(String title) {
-  //   return http.post(
-  //     Uri.parse(post),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(<String, String>{
-  //       'content': title,
-  //     }),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,7 +137,10 @@ class _CreatePostState extends State<CreatePost> {
                         // ),
                         ElevatedButton(
                           onPressed: () async {
+                            // await httpService.uploadFile(image);
+
                             await httpService.postUser(_contextController.text);
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -299,47 +219,3 @@ class _CreatePostState extends State<CreatePost> {
     );
   }
 }
-
-// class CustomImageFormField extends StatelessWidget {
-//   CustomImageFormField({
-//     Key? key,
-//     required this.validator,
-//     required this.onChanged,
-//   }) : super(key: key);
-//   final String? Function(File?) validator;
-//   final Function(File) onChanged;
-//   File? _pickedFile;
-//   @override
-//   Widget build(BuildContext context) {
-//     return FormField<File>(
-//         validator: validator,
-//         builder: (formFieldState) {
-//           return Column(
-//             children: [
-//               GestureDetector(
-//                 onTap: () async {
-//                   FilePickerResult? file = await FilePicker.platform
-//                       .pickFiles(type: FileType.image, allowMultiple: true);
-//                   if (file != null) {
-//                     _pickedFile = File(file.files.first.path!);
-//                     onChanged.call(_pickedFile!);
-//                   }
-//                 },
-//               ),
-//               if (formFieldState.hasError)
-//                 Padding(
-//                   padding: const EdgeInsets.only(left: 8, top: 10),
-//                   child: Text(
-//                     formFieldState.errorText!,
-//                     style: TextStyle(
-//                         fontStyle: FontStyle.normal,
-//                         fontSize: 13,
-//                         color: Colors.red[700],
-//                         height: 0.5),
-//                   ),
-//                 )
-//             ],
-//           );
-//         });
-//   }
-// }
