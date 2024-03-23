@@ -2,7 +2,7 @@
 
 ## Prerequisites 📌
 
-- Flutter SDK with Dart SDK version 3.2.0 or higher
+- Flutter SDK with Dart SDK []()version 3.2.0 or higher
 - Internet Connection to load google fonts & images
 
 ## Setup ⚙️

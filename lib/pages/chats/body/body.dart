@@ -144,7 +144,7 @@ class BuildFollowableUser extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MessageScreen()),
+            MaterialPageRoute(builder: (context) => ChatUserScreen()),
           );
         },
         child: CircleAvatar(
@@ -171,22 +171,6 @@ class BuildFollowableUser extends StatelessWidget {
         },
         color: Color.fromARGB(255, 15, 15, 15), // Màu của icon
       ),
-      // trailing: ElevatedButton(
-      //   style: ElevatedButton.styleFrom(
-      //     backgroundColor: Color.fromARGB(171, 255, 255, 255),
-      //     shape: RoundedRectangleBorder(
-      //       side: const BorderSide(
-      //         color: Color.fromARGB(255, 8, 108, 10),
-      //       ),
-      //       borderRadius: BorderRadius.circular(10.0),
-      //     ),
-      //   ),
-      //   onPressed: () {},
-      //   child: const Text(
-      //     'Follow',
-      //     style: TextStyle(color: Color.fromARGB(255, 15, 15, 15)),
-      //   ),
-      // ),
     );
   }
 }
@@ -221,8 +205,6 @@ class CustomSearchDelegateWithDummyData extends SearchDelegate {
     ),
   ];
 
-// first overwrite to
-// clear the search text
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -235,7 +217,6 @@ class CustomSearchDelegateWithDummyData extends SearchDelegate {
     ];
   }
 
-// second overwrite to pop out of search menu
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
@@ -246,7 +227,6 @@ class CustomSearchDelegateWithDummyData extends SearchDelegate {
     );
   }
 
-// third overwrite to show query result
   @override
   Widget buildResults(BuildContext context) {
     List<String> matchQuery = [];
@@ -270,8 +250,6 @@ class CustomSearchDelegateWithDummyData extends SearchDelegate {
     );
   }
 
-// last overwrite to show the
-// querying process at the runtime
   @override
   Widget buildSuggestions(BuildContext context) {
     List<BuildFollowableUser> matchQuery = [];
@@ -292,3 +270,49 @@ class CustomSearchDelegateWithDummyData extends SearchDelegate {
     );
   }
 }
+
+// AppBar(
+//         scrolledUnderElevation: 0,
+//         toolbarHeight: 100.0,
+//         shape: const RoundedRectangleBorder(
+//           borderRadius: BorderRadius.vertical(
+//             bottom: Radius.circular(30.0),
+//           ),
+//         ),
+//         title: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             Row(
+//               children: [
+//                 CircleAvatar(
+//                   backgroundImage: NetworkImage('https://picsum.photos/200'),
+//                   radius: 25,
+//                 ),
+//                 const Gap(10),
+//                 Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       // people.name,
+//                       'Ninh',
+//                       style: const TextStyle(
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.bold,
+//                       ),
+//                     ),
+//                     getOnlineOrOffline()
+//                   ],
+//                 ),
+//               ],
+//             ),
+//             const Row(
+//               children: [
+//                 Icon(Icons.videocam),
+//                 Gap(25),
+//                 Icon(Icons.phone),
+//               ],
+//             ),
+//           ],
+//         ),
+//         backgroundColor: Colors.white,
+//       ),

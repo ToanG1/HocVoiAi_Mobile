@@ -41,37 +41,6 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     final theme = Theme.of(context);
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 64),
-          child: Container(
-            margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            padding: const EdgeInsets.only(bottom: 64),
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.background,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _comments.length,
-              itemBuilder: (_, index) {
-                return index == 0
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: CommentTile(comment: _comments[index]),
-                      )
-                    : CommentTile(comment: _comments[index]);
-              },
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: _header(theme),
-        ),
         Align(
           alignment: Alignment.bottomCenter,
           child: _commentTextField(theme),
@@ -80,35 +49,35 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     );
   }
 
-  Widget _header(ThemeData theme) {
-    return SizedBox(
-      height: 64,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: () {},
-            child: Container(
-              width: 36,
-              height: 4,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: theme.dividerColor.withAlpha(100),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text(
-              'Comments',
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _header(ThemeData theme) {
+  //   return SizedBox(
+  //     height: 64,
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //       children: [
+  //         InkWell(
+  //           onTap: () {},
+  //           child: Container(
+  //             width: 36,
+  //             height: 4,
+  //             decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(25),
+  //               color: theme.dividerColor.withAlpha(100),
+  //             ),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.only(bottom: 6),
+  //           child: Text(
+  //             'Comments',
+  //             style: theme.textTheme.titleMedium
+  //                 ?.copyWith(fontWeight: FontWeight.bold),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _commentTextField(ThemeData theme) {
     TextEditingController controller = TextEditingController();

@@ -1,4 +1,4 @@
-import 'package:ai_journey/pages/post/createPost.dart';
+import 'package:ai_journey/pages/userpost/body/createPost.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_journey/models/models.dart';
 import 'package:ai_journey/widgets/widgets.dart';
@@ -9,7 +9,6 @@ class FeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
       appBar: _appBar(context, theme),
       body: ResponsivePadding(

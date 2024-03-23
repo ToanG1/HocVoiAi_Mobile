@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'package:ai_journey/config/app_storage.dart';
 import 'package:ai_journey/config/http_client.dart';
 import 'package:ai_journey/pages/home/home_page.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-
 import 'dart:async';
 
 class CreatePost extends StatefulWidget {
@@ -19,40 +15,43 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   final TextEditingController _contextController = TextEditingController();
-
   late String accessToken;
 
-  XFile? image;
-  List<String?> urlImage = [];
+  XFile? image; //array 23
+  var urlImages = [];
   final httpService = HttpService(url);
-
   final ImagePicker picker = ImagePicker();
-  Future getImage(ImageSource media) async {
-    var img = await picker.pickImage(source: media);
+  final ImagePicker imagePicker = ImagePicker();
+  List<XFile>? imageFileList = [];
 
+  Future getImage(ImageSource media) async {
+    // list image input
+    //foreach list image
+    var img = await picker.pickImage(source: media);
     setState(() {
-      image = img;
+      image = img; //add image ==36 // no gans
     });
     if (img != null) {
-      //File file = File(img.path);
       String filePath = img.path;
-      await httpService.uploadFile(filePath);
+      String? imageUrl = await httpService.uploadFile(filePath);
+      if (imageUrl!.isNotEmpty) urlImages.add(imageUrl);
+      print(urlImages);
     }
+    //dong foreach
   }
 
-  // Future<Posts> fetchAlbum() async {
-  //   final response = await http.get(Uri.parse(login));
-  //   final Map<String, dynamic> jsonData = jsonDecode(response.body);
-
-  //   final accessToken = jsonData['data']['access_token'];
-  //   print(accessToken);
-
-  //   if (response.statusCode == 200) {
-  //     return Posts.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  //   } else {
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
+  void selectImages() async {
+    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      imageFileList!.addAll(selectedImages);
+      setState(() {});
+      for (var imageFile in imageFileList!) {
+        String? imageUrl = await httpService.uploadFile(imageFile.path);
+        if (imageUrl!.isNotEmpty) urlImages.add(imageUrl);
+      }
+    }
+    print("Image List Length:" + imageFileList!.length.toString());
+  }
 
   void myAlert() {
     showDialog(
@@ -69,8 +68,8 @@ class _CreatePostState extends State<CreatePost> {
                   ElevatedButton(
                     //if user click this button, user can upload image from gallery
                     onPressed: () {
+                      selectImages();
                       Navigator.pop(context);
-                      getImage(ImageSource.gallery);
                     },
                     child: Row(
                       children: [
@@ -80,7 +79,6 @@ class _CreatePostState extends State<CreatePost> {
                     ),
                   ),
                   ElevatedButton(
-                    //if user click this button. user can upload image from camera
                     onPressed: () {
                       Navigator.pop(context);
                       getImage(ImageSource.camera);
@@ -99,6 +97,10 @@ class _CreatePostState extends State<CreatePost> {
         });
   }
 
+  void dltImages(data) {
+    imageFileList?.remove(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +108,6 @@ class _CreatePostState extends State<CreatePost> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: ListView(
           children: [
-            // Phần bên trên
             SizedBox(height: 10),
             Expanded(
               child: Row(
@@ -117,30 +118,24 @@ class _CreatePostState extends State<CreatePost> {
                     Icons.arrow_back,
                     color: Colors.black,
                   ),
-                  SizedBox(width: 25), // Khoảng cách giữa icon và logo
+                  SizedBox(width: 40),
                   const Text(
                     "Post",
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
                       color: Colors.green,
                     ),
                   ),
-                  SizedBox(width: 125),
+                  SizedBox(width: 45),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Row(
                       children: [
-                        // CustomImageFormField(
-                        //   validator: (val) {},
-                        //   onChanged: (_file) {},
-                        // ),
                         ElevatedButton(
                           onPressed: () async {
-                            // await httpService.uploadFile(image);
-
-                            await httpService.postUser(_contextController.text);
-
+                            await httpService.postUser(
+                                _contextController.text, urlImages);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -157,14 +152,15 @@ class _CreatePostState extends State<CreatePost> {
                                 MaterialStateProperty.all(Colors.green),
                           ),
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            // SizedBox(height: 20), // Khoảng cách giữa hai phần
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,37 +170,67 @@ class _CreatePostState extends State<CreatePost> {
                         horizontal: 10, vertical: 20),
                     child: TextFormField(
                       controller: _contextController,
+                      maxLines: 5, // Số dòng tối đa cho phép nhập
                       decoration: const InputDecoration(
-                        hintText: 'Write something your post',
+                        hintText: 'Write something for your post',
                       ),
                       validator: (value) {
                         if (value!.isEmpty)
-                          return 'Please, describe the problem';
+                          return 'Please describe the problem';
                       },
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      myAlert();
-                    },
-                    child: Text('Upload Photo'),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        myAlert();
+                        //selectImages();
+                      },
+                      child: Text('Upload Photo'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   _contextController.text.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              //to show image, you type like this.
-                              File(image!.path),
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width,
-                              height: 300,
-                            ),
-                          ),
+                      ? GridView.builder(
+                          itemCount: imageFileList!.length,
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3),
+                          itemBuilder: (BuildContext context, int i) {
+                            return Container(
+                              padding: const EdgeInsets.all(30),
+                              child: Stack(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 100,
+                                    width: 100, // Kích thước của ảnh
+                                    child: Image.file(
+                                      File(imageFileList![i].path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        imageFileList!.removeAt(i);
+                                      });
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.topRight,
+                                      child: const Icon(Icons.cancel,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
                         )
                       : Text(
                           "No Image",

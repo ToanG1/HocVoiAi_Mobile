@@ -1,3 +1,4 @@
+import 'package:ai_journey/pages/settings/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_journey/common/common.dart';
 import 'package:ai_journey/models/models.dart';
@@ -67,7 +68,16 @@ class ProfilePage extends StatelessWidget {
                       )
                     : const SizedBox(),
                 IconButton.filledTonal(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (user.isMe) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingPage(),
+                        ),
+                      );
+                    }
+                  },
                   style: IconButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary.withAlpha(75),
                   ),

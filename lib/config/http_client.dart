@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:ai_journey/config/app_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 final url = 'http://192.168.1.126:5003/';
 final urlimage = 'http://192.168.1.126:9000/';
@@ -23,19 +23,16 @@ class HttpService {
       "email": username,
       "password": password,
     };
-
     try {
       final response = await http.post(
         Uri.parse('$baseUrl$loginEndpoint'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(regBody),
       );
-
       if (response.statusCode == 201) {
         // Đăng nhập thành công
         print("Đăng nhập thành công: ${response.body}");
         Map<String, dynamic> jsonData = jsonDecode(response.body);
-
         AppStorage.instance.setString(
             key: 'access_token', value: jsonData['data']['access_token']);
         //return accessToken;
@@ -49,78 +46,7 @@ class HttpService {
     }
   }
 
-  // Future<void> upload() async {
-  //   // Lấy danh sách các tệp đã chọn từ phần tử nhập.
-  //   List<File> files = []; // Danh sách chứa các tệp đã chọn.
-  //   // Điều này phụ thuộc vào cách bạn lấy được danh sách các tệp đã chọn từ giao diện người dùng trong Flutter.
-
-  //   for (var i = 0; i < files.length; i++) {
-  //     var file = files[i];
-  //     // Lấy URL từ máy chủ của chúng tôi.
-  //     // Tải tệp lên máy chủ.
-  //     await uploadFile(file);
-  //   }
-  // }
-
-  // Future<void> uploadFile(File file) async {
-
-  //   final Map<String, String> regBody = {
-  //     "image": "${file.path}",
-  //   };
-  //   try {
-  //     final response = await http.post(
-  //       Uri.parse('$image'),
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         "Authorization":
-  //             "Bearer ${AppStorage.instance.getString(key: 'access_token')}",
-  //       },
-  //       body: jsonEncode(regBody),
-  //     );
-  //     if (response.statusCode == 201) {
-  //       // Đăng nhập thành công
-  //       Map<String, dynamic> jsonData = jsonDecode(response.body);
-
-  //       print("Đăng bài thành công: ${response.body}");
-
-  //       AppStorage.instance
-  //           .setString(key: 'url', value: jsonData['data']['url']);
-  //     } else {
-  //       print("Đăng bài không thành công: ${response.body}");
-
-  //       AppStorage.instance.setString(key: 'url', value: 'null');
-
-  //       // return jsonData['data']['url'];
-  //     }
-  //     // Xử lý phản hồi từ server
-  //   } catch (error) {
-  //     print("Đã xảy ra lỗi khi đăng bài: $error");
-  //     //throw error;
-  //   }
-
-  //   // try {
-  //   //   var request = http.Request('POST', Uri.parse(urlimage));
-
-  //   //   request.headers['Content-Type'] = 'multipart/form-data';
-  //   //   request.headers['Authorization'] =
-  //   //       "Bearer  ${AppStorage.instance.getString(key: 'access_token')}";
-
-  //   //   var response =
-  //   //       await request.send().then((http.StreamedResponse streamedResponse) {
-  //   //     if (streamedResponse.statusCode == 200) {
-  //   //       // Nếu muốn xử lý phản hồi, bạn có thể làm ở đây.
-  //   //       print('Uploaded ${file.path}');
-  //   //     } else {
-  //   //       throw Exception(
-  //   //           'Failed to upload file: ${streamedResponse.reasonPhrase}');
-  //   //     }
-  //   //   });
-  //   // } catch (e) {
-  //   //   print('Error uploading file: $e');
-  //   //   rethrow; // Re-throw the exception for handling by the caller.
-  //   // }
-  // }
-  Future<void> uploadFile(String filePath) async {
+  Future<String?> uploadFile(String filePath) async {
     // Tạo một multipart request
     var request = http.MultipartRequest(
       'POST',
@@ -148,19 +74,19 @@ class HttpService {
       Map<String, dynamic> jsonData = jsonDecode(responseBody);
 
       AppStorage.instance.setString(key: 'url', value: jsonData['data']['url']);
-      print(jsonData);
-      print('-------------------------------------');
 
-      print(AppStorage.instance.getString(key: 'url'));
+      return jsonData['data']['url'];
     } else {
       print('Failed to upload file. Status code: ${response.statusCode}');
+      return null;
     }
   }
 
-  Future<void> postUser(String context) async {
-    final Map<String, String> regBody = {
+  Future<void> postUser(String context, List<dynamic> urlImages) async {
+    final Map<String, dynamic> regBody = {
       "content": context,
-      "images": AppStorage.instance.getString(key: 'url') ?? "",
+      "images": urlImages,
+      "videos": new List.empty(),
     };
 
     try {
@@ -178,11 +104,22 @@ class HttpService {
         print("Đăng bài thành công: ${response.body}");
       } else {
         print("Đăng bài không thành công: ${response.body}");
-        print(AppStorage.instance.getString(key: 'url'));
       }
       // Xử lý phản hồi từ server
     } catch (error) {
       print("Đã xảy ra lỗi khi đăng bài: $error");
     }
+  }
+
+  Future<void> sendChat(String context) async {
+    // Dart client
+    IO.Socket socket = IO.io('$url');
+    socket.onConnect((_) {
+      print('connect');
+      socket.emit('msg', 'test');
+    });
+    socket.on('event', (data) => print(data));
+    socket.onDisconnect((_) => print('disconnect'));
+    socket.on('fromServer', (_) => print(_));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:ai_journey/widgets/layout/responsive_padding.dart';
 import 'package:flutter/material.dart';
+import './../../../config/http_client.dart';
 
 class ConversationChatAI1 extends StatefulWidget {
   const ConversationChatAI1({super.key});
@@ -234,6 +235,9 @@ class _ConversationChatAIState extends State<ConversationChatAI1> {
   }
 }
 
+final httpService = HttpService(url);
+final TextEditingController _messsageToAI = TextEditingController();
+
 class FooterBar extends StatelessWidget {
   const FooterBar({
     Key? key,
@@ -258,6 +262,7 @@ class FooterBar extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: _messsageToAI,
                       style: TextStyle(
                         color: Color.fromARGB(255, 243, 242, 242),
                         fontSize: 15,
@@ -272,9 +277,14 @@ class FooterBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Icon(
-                    Icons.send,
-                    color: Colors.black,
+                  IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      // httpService.sendChat(_messsageToAI.text);
+                    },
                   ),
                 ],
               ),

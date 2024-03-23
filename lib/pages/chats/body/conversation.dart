@@ -1,206 +1,71 @@
-// import 'package:ai_journey/models/models.dart';
-// import 'package:ai_journey/widgets/layout/responsive_padding.dart';
-// import 'package:flutter/material.dart';
-
-// class ConversationChatFriend extends StatefulWidget {
-//   const ConversationChatFriend({super.key});
-
-//   @override
-//   State<ConversationChatFriend> createState() => _ConversationChatFriendState();
-// }
-
-// class _ConversationChatFriendState extends State<ConversationChatFriend> {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: _appBar(context),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           mainAxisAlignment:
-//               MainAxisAlignment.center, // Canh giữa các widget theo chiều dọc
-//           crossAxisAlignment: CrossAxisAlignment.center,
-
-//           children: [],
-//         ),
-//       ),
-//       bottomSheet: BottomAppBar(
-//         child: Container(
-//           decoration: BoxDecoration(
-//             color: Color.fromARGB(255, 159, 234, 187),
-//           ),
-//           height: 50,
-//           child: Align(
-//             alignment: Alignment.bottomLeft,
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: TextField(
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 15,
-//                     ),
-//                     textAlign: TextAlign.left,
-//                     decoration: InputDecoration(
-//                       hintText: 'Hello chatGPT,how are you today?',
-//                       hintStyle: TextStyle(
-//                         color: Colors.black,
-//                       ),
-//                       border: InputBorder.none,
-//                     ),
-//                   ),
-//                 ),
-//                 const Icon(
-//                   Icons.send,
-//                   color: Colors.black,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// AppBar _appBar(BuildContext context) {
-//   return AppBar(
-//     automaticallyImplyLeading: false,
-//     flexibleSpace: ResponsivePadding(
-//       child: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               SingleChildScrollView(
-//                 padding: EdgeInsets.only(top: 10),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment
-//                       .spaceBetween, // căn chỉnh các phần tử theo hai bên của hàng
-//                   children: [
-//                     Row(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Icon(
-//                           Icons.arrow_back,
-//                           color: Colors.black,
-//                         ),
-//                         SizedBox(width: 10), // Khoảng cách giữa icon và logo
-//                         Image.asset(
-//                           'assets/images/avatar.jpg',
-//                           height: 40,
-//                           width: 40,
-//                         ),
-//                         SizedBox(width: 10),
-
-//                         const Text(
-//                           "Online",
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 15,
-//                             fontWeight: FontWeight.normal,
-//                             color: Colors.green,
-//                           ),
-//                         ),
-//                         Container(
-//                           margin: EdgeInsets.only(left: 6, right: 11),
-//                           padding:
-//                               EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-//                           decoration: BoxDecoration(
-//                             color: const Color(0xFF66D8B7),
-//                             borderRadius: BorderRadius.circular(25.0),
-//                           ),
-//                         ),
-//                         SizedBox(width: 20),
-//                         Padding(
-//                           padding: EdgeInsets.only(left: 0.0),
-//                           child: Icon(
-//                             Icons.volume_up,
-//                             color: Colors.black,
-//                           ),
-//                         )
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:gap/gap.dart';
 
-import 'dart:math';
+import 'package:flutter/material.dart';
+import './../../../models/user_chat.dart';
+import 'package:uuid/uuid.dart';
+import './components/message_card.dart';
+import './../../../main.dart';
 
-class MessageScreen extends StatefulWidget {
-  const MessageScreen({super.key});
+class ChatUserScreen extends StatefulWidget {
+  const ChatUserScreen({super.key});
 
   @override
-  State<MessageScreen> createState() => _MessageScreenState();
+  State<ChatUserScreen> createState() => _ChatUserScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
-  var messageController = TextEditingController();
+class _ChatUserScreenState extends State<ChatUserScreen> {
+  TextEditingController controller = TextEditingController();
+  List<Message> messages = [];
 
-  // Kullanicinin bu sayfaya erisimi yoksa welcomeScreen'e gonderiyoruz.
-  // getUser() async {
-  //   Storage storage = Storage();
-
-  //   var user = await storage.loadUser();
-
-  //   if (user == null) {
-  //     Navigator.of(context)
-  //         .pushNamedAndRemoveUntil("/welcome", (route) => false);
-  //   }
-  // }
-
-  // Screen'imiz yuklendiginde auth fonksiyonumuzu calistiriyoruz.
   @override
   void initState() {
+    _startWebSocket();
+
+    chatRepository.subscribeToMessageUpdates((message) {
+      // Update an existing message
+      if (message['event'] == 'message.updated') {
+        final updatedMessage = Message.fromJson(message['data']);
+        setState(() {
+          messages = messages.map((message) {
+            if (message.id == updatedMessage.id) {
+              return updatedMessage;
+            }
+            return message;
+          }).toList();
+        });
+        return;
+      }
+
+      // New message
+      final newMessage = Message.fromJson(message['data']);
+      setState(() {
+        messages.add(newMessage);
+      });
+    });
     super.initState();
-    //  getUser();
   }
 
-  sendMessage(_, index, func) {
-    // dynamic currentTime = DateFormat('hh:mm a')
-    //     .format(DateTime.now().add(const Duration(hours: 3)));
+  _startWebSocket() {
+    webSocketClient.connect(
+      'ws://localhost:8080/ws',
+      {
+        'Authorization': 'Bearer ...',
+      },
+    );
+  }
 
-    // setState(() {
-    //   messages[index].add(
-    //     MessageItem(
-    //       message: messageController.text,
-    //       time: currentTime,
-    //       isMe: false,
-    //     ),
-    //   );
-
-    //   peopleList[index].lastMessage = messageController.text;
-    //   peopleList[index].unreadCount = -1;
-    //   peopleList[index].dateTime = currentTime;
-    // });
-    // func();
-    // messageController.clear();
+  Future<void> _createMessage(Message message) async {
+    await chatRepository.createMessage(message);
   }
 
   @override
   Widget build(BuildContext context) {
-//     List<dynamic> arguments =
-//         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-
-// //    final People people = arguments[0];
-//     final int index = arguments[1];
-//     final Function func = arguments[2];
-
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 159, 234, 187),
         scrolledUnderElevation: 0,
         toolbarHeight: 100.0,
         shape: const RoundedRectangleBorder(
@@ -214,17 +79,17 @@ class _MessageScreenState extends State<MessageScreen> {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage('people.avatarUrl'),
+                  backgroundImage: NetworkImage('https://picsum.photos/200'),
                   radius: 25,
                 ),
-                const Gap(10),
+                SizedBox(width: 10), // Use SizedBox for spacing
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       // people.name,
                       'Ninh',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -234,131 +99,132 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
               ],
             ),
-            const Row(
+            const SizedBox(height: 10), // Add spacing between the rows
+            Row(
               children: [
-                Icon(Icons.videocam),
-                Gap(25),
-                Icon(Icons.phone),
+                IconButton(
+                  icon: const Icon(Icons.videocam),
+                  onPressed: () {},
+                ),
+                //const SizedBox(width: 25),
+                IconButton(
+                  icon: const Icon(Icons.phone),
+                  onPressed: () {},
+                ),
               ],
             ),
           ],
         ),
-        backgroundColor: Colors.white,
       ),
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 241, 241, 241),
-        ),
-        child: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(top: 140),
-          child: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // ...messages[index],
-                      ],
-                    ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   title: RichText(
+      //     text: TextSpan(
+      //       text: 'Build with ',
+      //       style: textTheme.titleLarge,
+      //       children: [
+      //         TextSpan(
+      //           text: 'Gemini',
+      //           style: textTheme.titleLarge!.copyWith(
+      //             fontWeight: FontWeight.bold,
+      //             color: Colors.black,
+      //           ),
+      //         )
+      //       ],
+      //     ),
+      //   )
+      //       .animate(
+      //         onComplete: (controller) => controller.repeat(),
+      //       )
+      //       .shimmer(
+      //         duration: const Duration(milliseconds: 2000),
+      //         delay: const Duration(milliseconds: 1000),
+      //       ),
+      // ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        itemCount: messages.length,
+        itemBuilder: (context, index) {
+          final message = messages[index];
+          return MessageCard(message: message);
+        },
+      ),
+      floatingActionButton: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: TextFormField(
+                controller: controller,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Input text',
+                  filled: true,
+                  isDense: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
                   ),
                 ),
+                onFieldSubmitted: (text) {
+                  if (text.isNotEmpty) {
+                    controller.clear();
+                  }
+                },
               ),
-              Container(
-                width: double.infinity,
-                height: 120,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(30),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 241, 241, 241),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 25,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            // onSubmitted: (value) => sendMessage(
-                            //   value,
-                            //   index,
-                            //   func,
-                            // ),
-                            controller: messageController,
-                            decoration: InputDecoration.collapsed(
-                              hintText: 'Type here...',
-                              hintStyle: TextStyle(
-                                fontSize: 17,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                            ),
-                          ),
-                        ),
-                        VerticalDivider(color: Colors.black.withOpacity(0.2)),
-                        const Gap(15),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.mood,
-                              size: 25,
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                            const Gap(17),
-                            Icon(
-                              Icons.photo_camera,
-                              size: 25,
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.picture_in_picture_outlined),
+            ),
+            IconButton(
+              onPressed: () {
+                final message = Message(
+                  id: const Uuid().v4(),
+                  content: controller.text,
+                  sourceType: MessageSourceType.user,
+                  createdAt: DateTime.now(),
+                );
+
+                setState(() {
+                  messages.add(message);
+                });
+
+                _createMessage(message);
+                controller.clear();
+              },
+              icon: const Icon(Icons.send),
+            ),
+          ],
         ),
       ),
     );
   }
+}
 
-  Widget getOnlineOrOffline() {
-    int rand = Random().nextInt(2) + 1;
-    switch (rand) {
-      case 1:
-        {
-          return const Text(
-            "Online",
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 58, 158, 62),
-            ),
-          );
-        }
-      default:
-        {
-          return const Text(
-            "Offline",
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.red,
-            ),
-          );
-        }
-    }
+Widget getOnlineOrOffline() {
+  int rand = Random().nextInt(2) + 1;
+  switch (rand) {
+    case 1:
+      {
+        return const Text(
+          "Online",
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 58, 158, 62),
+          ),
+        );
+      }
+    default:
+      {
+        return const Text(
+          "Offline",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.red,
+          ),
+        );
+      }
   }
 }
